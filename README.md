@@ -1,4 +1,4 @@
-# <TITLE>
+# TTMINVOELLMY Interface to Stefan Hergarten's rock avalanche model
 
 <summary>
 
