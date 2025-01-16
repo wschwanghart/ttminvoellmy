@@ -56,8 +56,9 @@ function [H,T] = ttminvoellmy(DEM,H,options)
 %                (Default = [0 0])
 %     clim       Color range. Default is [0 5].
 %     colormap   Default is flipud(ttscm('batlowW',255,[20 100]))
-%     gif        true or false. If true, the function will write a gif.
-%     gifname    name of the gif. Default is 'minvoellmy.gif'
+%     video      true or false. If true, the function will write a gif or 
+%                mp4, depending on extension provided in filename
+%     videofile  name of the gif. Default is 'minvoellmy.gif'
 %     position   four element vector indicating figure position. Note that
 %                if a gif is created, the figure is nonresizable.
 %
@@ -110,8 +111,8 @@ arguments
     options.plotfun  = []
     options.plotmask = ~GRIDobj(DEM,'logical')
     options.camorbit (1,2) {mustBeNumeric} = [0,0] 
-    options.gif      (1,1) = false
-    options.gifname  = 'minvoellmy.gif'
+    options.video      (1,1) = false
+    options.videoname  = 'minvoellmy.gif'
     options.colormap = flipud(ttscm('batlowW',255,[20 100]))
     options.clim     (1,2) {mustBeNumeric} = [0, 5]
     options.controls = true
@@ -161,9 +162,7 @@ if options.plot
             "ButtonPushedFcn",@(btn,event) pauseOrContinueLoop());
         hstopbutton = uibutton(g,"Text","Stop simulation",...
             "ButtonPushedFcn",@(btn,event) stopLoop());
-    end
-       
-        
+    end        
 
         % Create a variable to control the loop
         running = true;
@@ -172,10 +171,19 @@ if options.plot
 
         % Create another axis with the figure
         fh  = figure('Units','Normalized','Position',options.position);
-        if options.gif
+        if options.video
             % If a gif will be produced, then the figure should not be
             % resizable.
             fh.Resize = false;
+            
+            [folder,file,ext] = fileparts(options.videoname);
+            switch lower(ext)
+                case '.gif'
+                    writegif = true;
+                otherwise
+                    writegif = false;
+            end
+
         end
         ax  = axes("Parent",fh);
         ax.Position = [0 0 1 1];
@@ -185,20 +193,27 @@ if options.plot
         camorbit(ax,options.camorbit(1),options.camorbit(2))
         colormap(ax,options.colormap)
         camlight
+        camzoom(1.5)
 
         % colorbar
         clim(options.clim)
         lastcamorbit = options.camorbit;
 
         axis off
+        fh.Color = ttclrr('skyblue');
         material dull
 
         subplotlabel(gca,['t = ' num2str(0,'%6.2f') ' s'],'Location','southwest');
         drawnow;
 
         % Gif
-        if options.gif
-            gif(options.gifname, 'frame', fh,'overwrite',true)
+        if options.video
+            if writegif
+                gif(options.videoname, 'frame', fh,'overwrite',true)
+            else
+                v = VideoWriter(options.videoname,"MPEG-4");
+                open(v)
+            end
         end
 
         if options.controls
@@ -242,9 +257,12 @@ while counter <= options.maxsteps && t <= options.maxtime && running
         drawnow; 
     end
 
-    if options.gif && mod(counter,10) == 0
-        if options.gif
+    if options.video && mod(counter,10) == 0
+        if writegif
             gif
+        else
+            frame = getframe(gcf);
+            writeVideo(v,frame)
         end
     end
 
@@ -262,9 +280,13 @@ H.Z = o.h;
 if options.controls
     close(fhcontrol)
 end
-% if options.gif
-%     gif('clear')
-% end
+if options.video
+    if writegif
+        gif('clear')
+    else
+        close(v)
+    end
+end
 
 
 % Nested functions 

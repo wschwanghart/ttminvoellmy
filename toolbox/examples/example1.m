@@ -25,5 +25,6 @@ H  = LS*20;
 
 %% Run minvoellmy
 
-[H2,T] = ttminvoellmy(DEM,H,"gif",false,'maxtime',200,'camorbit',[160 0]);
+[H2,T] = ttminvoellmy(DEM,H,"video",false,'maxtime',200,...
+    'camorbit',[220 -10],'controls',false,'clim',[0 20]);
 
