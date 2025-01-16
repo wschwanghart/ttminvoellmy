@@ -1,8 +1,8 @@
 # TTMINVOELLMY Interface to Stefan Hergarten's rock avalanche model
 
-MinVoellmy is a lightweight, open-source model for simulating rapid mass movements such as snow avalanches and rock avalanches. It implements the modified Voellmy rheology proposed by Hergarten (2024a). Details of the implementation are described by Hergarten (2024b). ttminvoellmy is a [MATLAB-based TopoToolbox](https://github.com/TopoToolbox/topotoolbox3) (Schwanghart and Scherler, 2014) interface to the [MinVoellmy 2D solver](http://hergarten.at/minvoellmy/) which makes simulation and visualization easy-going. 
+[TTMINVOELLMY](/images/ttminvoellmy.jpg "Eiger Landslide")
 
-<video src="./video/eiger_landslide.mp4" width=180></video>
+MinVoellmy is a lightweight, open-source model for simulating rapid mass movements such as snow avalanches and rock avalanches. It implements the modified Voellmy rheology proposed by Hergarten (2024a). Details of the implementation are described by Hergarten (2024b). ttminvoellmy is a [MATLAB-based TopoToolbox](https://github.com/TopoToolbox/topotoolbox3) (Schwanghart and Scherler, 2014) interface to the [MinVoellmy 2D solver](http://hergarten.at/minvoellmy/) which makes simulation and visualization easy-going. 
 
 ## Installation
 

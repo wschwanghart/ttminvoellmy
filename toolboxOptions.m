@@ -74,7 +74,7 @@ function opts = toolboxOptions
     % Path to the toolbox image file. Can be specified as a relative or
     % absolute path.
     %
-    % opts.ToolboxImageFile = 
+    opts.ToolboxImageFile = "images" + filesep + "ttminvoellmy_quad.png";
 
     % Files to be packaged in the toolbox, string vector. By default,
     % ToolboxFiles contains the list of all files in toolboxFolder.
