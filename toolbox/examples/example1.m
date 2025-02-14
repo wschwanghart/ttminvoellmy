@@ -5,6 +5,8 @@
 DEM = GRIDobj("data\grindelwald.txt");
 
 %% Create detached volume
+
+% X and Y coordinates of enclosing polygon
 pos = [...
     6.4348    1.5869
     6.4360    1.5879
@@ -21,10 +23,11 @@ MS = struct('Geometry','Polygon',...
     'X',pos(:,1),'Y',pos(:,2));
 
 LS = polygon2GRIDobj(DEM,MS,'waitbar',false);
+
+% Detached volume
 H  = LS*20;
 
 %% Run minvoellmy
-
 [H2,T] = ttminvoellmy(DEM,H,"video",false,'maxtime',200,...
     'camorbit',[220 -10],'controls',false,'clim',[0 20]);
 
