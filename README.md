@@ -6,11 +6,13 @@ MinVoellmy is a lightweight, open-source model for simulating rapid mass movemen
 
 ## Installation
 
-<instructions>
+You can either download the entire toolbox and add the folder `toolbox` and its subfolders to the search path. Alternatively, download the latest release of the toolbox (.mltbx). Once, you double-click the toolbox, it will be installed to MATLAB's add-on folder.
+
+Note that TTMINVOELLMY requires TopoToolbox to be installed.
 
 ## Getting Started
 
-<pointer to gettingStarted.mlx file>
+To get started, check the folder `examples`. There are three examples that should be rather self-explanatory.
 
 ## License
 

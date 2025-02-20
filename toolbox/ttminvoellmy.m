@@ -24,8 +24,9 @@ function [H,T] = ttminvoellmy(DEM,H,options)
 %     Physical parameters
 %  
 %     mu      Coulomb friction coefficient (default = 0.2)
-%     xi      Bed roughness parameter (default = 500)
-%     vc
+%     xi      Bed roughness parameter (default = 500 m s^-2)
+%     vc      Crossover velocity at h = 1; vc <= 0 switches to the 
+%             conventional Voellmy rheology (default = 4 m s^-1) 
 %     g       Gravitational acceleration (default 9.81 m s^-2)
 %
 %     Numerical parameters
