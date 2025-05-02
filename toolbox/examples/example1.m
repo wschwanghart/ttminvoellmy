@@ -28,6 +28,6 @@ LS = polygon2GRIDobj(DEM,MS,'waitbar',false);
 H  = LS*20;
 
 %% Run minvoellmy
-[H2,T] = ttminvoellmy(DEM,H,"video",false,'maxtime',200,...
-    'camorbit',[220 -10],'controls',false,'clim',[0 20]);
+[H2,T] = ttminvoellmy(DEM,H,"video",false,'maxtime',500,...
+    'camorbit',[220 -10],'controls',true,'clim',[0 5], 'plotfreq', 10);
 

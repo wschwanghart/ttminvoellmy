@@ -51,6 +51,8 @@ function [H,T] = ttminvoellmy(DEM,H,options)
 %     plot       True or false (default = true). If true, the simulation 
 %                will be shown in a 3D surface plot where coloring
 %                indicates the thickness of the mobile layer.
+%     plotfreq   Frequency at which plots are created. The value should be
+%                higher than maxdt
 %     controls   True or false. If true, controls will be shown in a
 %                separate window.
 %     camorbit   Determines view angle (see function camorbit). 
@@ -59,7 +61,7 @@ function [H,T] = ttminvoellmy(DEM,H,options)
 %     colormap   Default is flipud(ttscm('batlowW',255,[20 100]))
 %     video      true or false. If true, the function will write a gif or 
 %                mp4, depending on extension provided in filename
-%     videofile  name of the gif. Default is 'minvoellmy.gif'
+%     videofile  name of the gif. Default is 'minvoellmy.mp4'
 %     position   four element vector indicating figure position. Note that
 %                if a gif is created, the figure is nonresizable.
 %
@@ -90,7 +92,7 @@ function [H,T] = ttminvoellmy(DEM,H,options)
 %
 % Author: Stefan Hergarten and 
 %         Wolfgang Schwanghart
-% Date: 13. January, 2025
+% Date: 1. May, 2025
 
 
 arguments
@@ -109,11 +111,12 @@ arguments
     options.cfl  (1,1) {mustBeNumeric,mustBeNonnegative}  = 0.7
 
     options.plot     (1,1) = true
+    options.plotfreq = 2; % 2 seconds
     options.plotfun  = []
     options.plotmask = ~GRIDobj(DEM,'logical')
     options.camorbit (1,2) {mustBeNumeric} = [0,0] 
     options.video      (1,1) = false
-    options.videoname  = 'minvoellmy.gif'
+    options.videoname  = 'minvoellmy.mp4'
     options.colormap = flipud(ttscm('batlowW',255,[20 100]))
     options.clim     (1,2) {mustBeNumeric} = [0, 5]
     options.controls = true
@@ -246,8 +249,10 @@ while counter <= options.maxsteps && t <= options.maxtime && running
         pause(0.2)
     end
 
+    % Did we cross the time stepping for plotting?
+    doplot = mod(t,options.plotfreq) < mod(t-dt,options.plotfreq);
         
-    if counter == 1 || mod(counter,10) == 0
+    if counter == 1 || doplot
         H.Z = o.h;
         Hp   = crop(H, options.plotmask);
 
