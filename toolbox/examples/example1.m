@@ -25,7 +25,7 @@ MS = struct('Geometry','Polygon',...
 LS = polygon2GRIDobj(DEM,MS,'waitbar',false);
 
 % Detached volume
-H  = LS*20;
+H  = LS*100;
 
 %% Run minvoellmy
 [H2,T] = ttminvoellmy(DEM,H,"video",false,'maxtime',500,...

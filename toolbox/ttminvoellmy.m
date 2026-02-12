@@ -122,6 +122,7 @@ arguments
     options.controls = true
     options.output (1,1) {mustBeNumeric,mustBeNonnegative} = inf
     options.position (1,4) = [0.20 .1 .70 .80]
+    options.camzoom (1,1) {mustBePositive} = 1
 
 end
 
@@ -197,7 +198,7 @@ if options.plot
         camorbit(ax,options.camorbit(1),options.camorbit(2))
         colormap(ax,options.colormap)
         camlight
-        camzoom(1.5)
+        camzoom(options.camzoom)
 
         % colorbar
         clim(options.clim)
@@ -232,7 +233,9 @@ else
     ispaused = false;
 end
 
-T = table(0,H,'VariableNames',{'Time','H'});
+if nargout == 2
+    T = table(0,H,'VariableNames',{'Time','H'});
+end
 
 % Run loop    
 while counter <= options.maxsteps && t <= options.maxtime && running
@@ -271,10 +274,12 @@ while counter <= options.maxsteps && t <= options.maxtime && running
             writeVideo(v,frame)
         end
     end
-
+    
+    if nargout == 2
     if ~isinf(options.output) && ((mod(counter,options.output)) == 0)
         H.Z = o.h;
         T   = [T;table(t,H,'VariableNames',{'Time','H'})];
+    end
     end
 
     % u = max(o.uh(:));
