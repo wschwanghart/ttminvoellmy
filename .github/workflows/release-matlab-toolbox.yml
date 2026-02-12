@@ -1,0 +1,43 @@
+name: Build & Release MATLAB Toolbox
+
+on:
+  push:
+    tags:
+      - "v*.*.*"   # e.g. v1.2.3
+  workflow_dispatch:
+
+jobs:
+  release-toolbox:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write   # required to create GitHub Releases
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up MATLAB
+        uses: mathworks/setup-matlab@v2
+
+      - name: Build toolbox
+        run: |
+          matlab -batch "try, packageToolbox, catch e, disp(getReport(e,'extended')), exit(1), end, exit(0)"
+
+      - name: Find toolbox file
+        id: find_toolbox
+        run: |
+          FILE=$(ls *.mltbx | head -n 1)
+          echo "toolbox_file=$FILE" >> $GITHUB_OUTPUT
+
+      - name: Upload toolbox artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: matlab-toolbox
+          path: ${{ steps.find_toolbox.outputs.toolbox_file }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.find_toolbox.outputs.toolbox_file }}
+          generate_release_notes: true
