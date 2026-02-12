@@ -3,7 +3,7 @@ name: Build & Release MATLAB Toolbox
 on:
   push:
     tags:
-      - "v*.*.*"   # e.g. v1.2.3
+      - "v1.0.2
   workflow_dispatch:
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
       - name: Find toolbox file
         id: find_toolbox
         run: |
-          FILE=$(ls *.mltbx | head -n 1)
+          FILE=$(ls release/*.mltbx | head -n 1)
           echo "toolbox_file=$FILE" >> $GITHUB_OUTPUT
 
       - name: Upload toolbox artifact
